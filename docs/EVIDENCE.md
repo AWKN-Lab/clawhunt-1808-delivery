@@ -130,7 +130,7 @@ $ docker compose exec -T api python scripts/ci_container_check.py
 candidate 13 字段齐全
 CONTAINER CHECK PASS
 exit code 0
-$ docker compose ps -aq | xargs docker inspect --format 'name=... exit={{.State.ExitCode}}'
+$ docker compose ps -a --format json
 repo-api-1 exit=0 / repo-postgres-1 exit=0 / repo-redis-1 exit=0
 ```
 
