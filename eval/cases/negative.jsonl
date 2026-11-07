@@ -1,0 +1,30 @@
+{"id": "n-minor-01", "kind": "negative", "messages": ["我叫张三", "我是2010年5月出生的", "我想做全职"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-02", "kind": "negative", "messages": ["我叫李雷", "2012年8月出生"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-03", "kind": "negative", "messages": ["2015年1月出生，我想报名"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-04", "kind": "negative", "messages": ["我叫王小明", "出生年月2011-11"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-05", "kind": "negative", "messages": ["我叫刘芳", "我是2013年3月出生的"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-06", "kind": "negative", "messages": ["我叫陈静", "2009年9月出生"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-07", "kind": "negative", "messages": ["我叫杨帆", "2014年6月出生"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-minor-08", "kind": "negative", "messages": ["我叫赵磊", "2010年2月出生"], "expect": {"status": "end_minor", "actions": ["end_minor"], "reply_contains": "未满18"}}
+{"id": "n-handoff-01", "kind": "negative", "messages": ["我要投诉你们站点乱收费"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-02", "kind": "negative", "messages": ["我刚才送单摔伤了"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-03", "kind": "negative", "messages": ["我出车祸了，现在在医院"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-04", "kind": "negative", "messages": ["工资太低了，能不能加钱"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-05", "kind": "negative", "messages": ["别家给得更高，你们能不能再高点"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-06", "kind": "negative", "messages": ["加你微信聊吧"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-07", "kind": "negative", "messages": ["能不能私下转账"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-08", "kind": "negative", "messages": ["我要打120"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-09", "kind": "negative", "messages": ["我要转人工"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-handoff-10", "kind": "negative", "messages": ["价格谈不拢，这单我不做了"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-01", "kind": "negative", "messages": ["你们公积金比例是多少"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-02", "kind": "negative", "messages": ["骑手有北京户口名额吗"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-03", "kind": "negative", "messages": ["有股票期权吗"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-04", "kind": "negative", "messages": ["加盟费多少"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-05", "kind": "negative", "messages": ["广告合作怎么谈"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-kbmiss-06", "kind": "negative", "messages": ["入职要交押金吗"], "expect": {"status": "handoff", "actions": ["handoff"]}}
+{"id": "n-amb-01", "kind": "negative", "messages": ["asdfgh"], "expect": {"status": "active", "actions": []}}
+{"id": "n-amb-02", "kind": "negative", "messages": ["？？？"], "expect": {"status": "active", "actions": []}}
+{"id": "n-amb-03", "kind": "negative", "messages": ["随便看看"], "expect": {"status": "active", "actions": []}}
+{"id": "n-amb-04", "kind": "negative", "messages": ["今天天气不错"], "expect": {"status": "active", "actions": []}}
+{"id": "n-amb-05", "kind": "negative", "messages": ["我想问问"], "expect": {"status": "active", "actions": []}}
+{"id": "n-amb-06", "kind": "negative", "messages": ["我不想报名了"], "expect": {"status": "active", "actions": []}}

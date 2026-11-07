@@ -1,0 +1,10 @@
+[project]
+name = "rider-recruit-agent-1808"
+version = "1.0.0"
+description = "ClawHunt #1808 task 1/5: conversational rider application engine + policy KB"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

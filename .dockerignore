@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+data
+audit
+eval/report.json
+eval/report.md
