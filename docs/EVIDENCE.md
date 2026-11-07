@@ -115,26 +115,28 @@ SMOKE PASS
 
 `verify.ps1` 中的同一步另一次实测为 `first_byte=46.8ms first_char=46.8ms`。
 
-## 6. 容器静态校验与 daemon 状态
+## 6. 容器路径（2026-11-07 本机实跑）
 
-```
-$ docker --version
-Docker version 29.9.2, build a82e528
-$ docker compose version
-Docker Compose version v5.6.1
-$ docker compose config --quiet
+环境：WSL2 Ubuntu 26.04 + Docker Engine 29.1.3 + Compose v2.40.3（宿主 Docker Desktop 4.98.0 的 daemon 在非交互会话中无法驻留，故改用 WSL 内 Engine；镜像加速与 `UP_EXIT` 判定见 `DELIVERY-NOTES.md` 第 8 节）。
+
+```text
+$ docker compose config
 exit code 0
+$ docker compose up --build --abort-on-container-exit
+api/postgres/redis → Up (healthy)
+UP_EXIT=0
+$ docker compose exec -T api python scripts/ci_container_check.py
+1/7 ... 7/7 progress=7 actions=['booking_confirmed']
+candidate 13 字段齐全
+CONTAINER CHECK PASS
+exit code 0
+$ docker compose ps -aq | xargs docker inspect --format 'name=... exit={{.State.ExitCode}}'
+repo-api-1 exit=0 / repo-postgres-1 exit=0 / repo-redis-1 exit=0
 ```
 
-```
-$ docker info
-...
-Server:
-failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
-exit code 1
-```
+`GET /api/v1/health` → `{"status":"ok","db":"ok","redis":"ok","llm_mode":"mock","llm_fault":"none","kb_docs":9,"kb_chunks":27}`。
 
-结论：未执行 `docker compose up`，仅完成 `docker compose config` 与 `scripts/compose_check.py` 静态校验。容器实跑声明为“静态待 CI”，不声称跑通。
+静态结构校验（`scripts/compose_check.py`）仍保留：
 
 ```
 $ .venv\Scripts\python.exe scripts\compose_check.py
@@ -168,6 +170,6 @@ exit code 0
 
 ## 8. 未实测项
 
-1. `docker compose up` / 容器内 7 项报名：未执行（daemon 不可用），等待 CI。
+1. `docker compose up` / 容器内 7 项报名：已在 WSL2 Docker Engine 29.1.3 上实跑通过（见第 6 节），无 CI run 号。
 2. GitHub Actions 两个 workflow：文件已写，未推送，未运行。
 3. 真实 OpenAI 兼容模型：未联调，默认 mock。

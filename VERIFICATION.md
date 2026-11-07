@@ -58,8 +58,21 @@ MUTATION PROOF PASS
 
 `tests/test_resilience.py::test_model_fault_degrades_without_losing_progress` 以 `LLM_FAULT=timeout` 和 `LLM_FAULT=error` 各跑一遍：回复含降级前缀与 `handoff` action，`progress.done` 不清零，会话保持 `active` 可继续，最终仍能完成 7/7 报名。
 
+## 容器路径实测（2026-11-07）
+
+```text
+docker compose config                                   → exit 0
+docker compose up --build --abort-on-container-exit     → UP_EXIT=0
+api / postgres / redis                                  → Up (healthy)
+GET /api/v1/health                                      → 200，db=ok / redis=ok，kb_docs=9，kb_chunks=27
+docker compose exec -T api python scripts/ci_container_check.py
+                                                        → 7/7、booking_confirmed、CONTAINER CHECK PASS，exit 0
+停止后各容器退出码                                       → api=0 / postgres=0 / redis=0
+```
+
+环境：WSL2 Ubuntu 26.04 + Docker Engine 29.1.3 + Compose v2.40.3（宿主 Docker Desktop daemon 在非交互会话中无法驻留；详见 `DELIVERY-NOTES.md` 第 8 节）。
+
 ## 未验证项（如实声明）
 
-1. 本机 Docker daemon 不可用（`docker info` exit 1，npipe 连接失败），**未执行** `docker compose up`、未在容器内跑 7 项报名。
-2. GitHub Actions workflow 已写入但未推送、未运行。
-3. 真实 OpenAI 兼容模型未联调（默认 mock，不联网）。
+1. GitHub Actions 两个 workflow 已写入但未推送、未运行；容器路径已在本机实跑（见上节），但无任何 CI run 号。
+2. 真实 OpenAI 兼容模型未联调（默认 mock，不联网）。

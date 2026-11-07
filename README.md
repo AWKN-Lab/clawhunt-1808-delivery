@@ -137,7 +137,7 @@ MUTATION GREEN (restored): 18-year gate test passed
 MUTATION PROOF PASS
 ```
 
-## 容器路径（本机未实跑，禁过度声明）
+## 容器路径（2026-11-07 本机实跑）
 
 ```bash
 docker compose up -d --build
@@ -148,7 +148,7 @@ docker compose down -v
 
 Compose 包含 `api`（Dockerfile 构建）、`postgres`（`pgvector/pgvector:pg16` + `deploy/postgres-init.sql` 建 `vector` 扩展与 `kb_chunks_embedding`）、`redis`（`redis:7-alpine`），三服务均有 healthcheck，api 等待 postgres/redis 健康后启动。
 
-本机状态：Docker CLI 29.9.2 / Compose v5.6.1 存在，`docker compose config --quiet` **exit 0**；但 Docker daemon 未运行（`docker info` 报 `failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine`），因此 **未在本机执行 `docker compose up`**。`scripts/compose_check.py` 仅做静态结构校验；真实容器实跑由 `.github/workflows/container.yml` 在 ubuntu-latest 执行（compose up → 等健康 → 7 项报名 → 断言 `progress.done==7` 与 candidate 字段齐全 → 退出码）。当前未推送，故 CI 尚未实际运行，如实标注为「静态待 CI」。
+本机状态：已在 WSL2 Ubuntu 26.04 的 Docker Engine 29.1.3 + Compose v2.40.3 上真实执行 `docker compose up --build --abort-on-container-exit`：`UP_EXIT=0`，api/postgres/redis 均 healthy；容器内 `python scripts/ci_container_check.py` → 7/7、`actions=["booking_confirmed"]`、candidate 13 字段齐全、`CONTAINER CHECK PASS`；停止后退出码 api=0 / postgres=0 / redis=0。宿主 Docker Desktop 4.98.0 的 daemon 在非交互会话中无法驻留，故改用 WSL 内 Engine（镜像加速与 `UP_EXIT` 判定见 `DELIVERY-NOTES.md` 第 8 节）。GitHub Actions 仍未推送、未运行。
 
 ## API v1
 
@@ -186,12 +186,12 @@ outbox 表记录 `candidate.created` / `candidate.completed` / `handoff.requeste
 
 - `docs/AC-MAP.md`：AC0–AC8 逐条映射到实现与测试。
 - `docs/EVIDENCE.md`：真实命令、真实输出、用例构成。
-- `docs/USABILITY-GATE-1808.md`：五闸逐闸 PASS/FAIL（容器闸本机未实跑，记 FAIL）。
+- `docs/USABILITY-GATE-1808.md`：五闸逐闸 PASS/FAIL（容器闸 2026-11-07 本机实测 PASS，5/5）。
 - `VERIFICATION.md`：测试/评测/冒烟/变异自证的完整记录。
 
 ## 已知限制
 
-1. 本机 Docker daemon 不可用，容器路径未实跑；CI 未推送，容器 job 未实际执行。仅完成 compose/Dockerfile 静态校验。
+1. 容器路径已在 WSL2 Docker Engine 29.1.3 上实跑通过；GitHub Actions 未推送、未实际执行，无 CI run 号。
 2. 默认 `LLM_MODE=mock`；`llm/openai_compatible.py` 保留 OpenAI 兼容实现，但本机无真实 key，未做真实模型联调。
 3. 所有姓名/手机号/身份证号均为明显虚构的合成数据（如 `13800138000`、`110101199001011234`）。
 4. Redis 在本地 sqlite 模式下跳过；容器路径才启用 Redis 连接。
